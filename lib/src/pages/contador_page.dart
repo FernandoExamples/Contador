@@ -1,55 +1,77 @@
 import 'package:flutter/material.dart';
 
-class ConteoPage extends StatefulWidget {
-  createState() => _ConteoPageState();
+class ContadorPage extends StatefulWidget {
+  @override
+  createState() => ContadorPageState();
 }
 
-class _ConteoPageState extends State<ConteoPage> {
-  final _textStyle = TextStyle(fontSize: 25);
-  int _cont = 0;
+class ContadorPageState extends State<ContadorPage> {
+  int _contador = 0;
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Stateful'),
-        ),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              Text('Numero de clicks', style: _textStyle),
-              Text('$_cont', style: _textStyle),
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
-          ),
-        ),
-        floatingActionButton: _createButtons());
+      appBar: AppBar(
+        title: Text('Contador'),
+        centerTitle: true,
+      ),
+      body: Center(child: _createBody(_contador)),
+      floatingActionButton: _createButtons(),
+    );
+  }
+
+  Widget _createBody(int cont) {
+    TextStyle textStyle = new TextStyle(fontSize: 25);
+    Column column = new Column(
+      children: <Widget>[
+        Text('Numero de Taps', style: textStyle),
+        Text('$cont', style: textStyle),
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
+
+    return column;
   }
 
   Widget _createButtons() {
-    return Row(
+    Row row = new Row(
       children: <Widget>[
         SizedBox(width: 30),
-        FloatingActionButton(
-            child: Icon(Icons.exposure_zero), onPressed: _zero),
+        _createButton(_reset, Icons.exposure_zero),
         Expanded(child: SizedBox()),
-        FloatingActionButton(child: Icon(Icons.remove), onPressed: _less),
+        _createButton(_less, Icons.remove),
         SizedBox(width: 5),
-        FloatingActionButton(child: Icon(Icons.add), onPressed: _sum)
+        _createButton(_sum, Icons.add),
       ],
       mainAxisAlignment: MainAxisAlignment.end,
+    );
+
+    return row;
+  }
+
+  FloatingActionButton _createButton(Function function, IconData icon) {
+    return FloatingActionButton(
+      onPressed: function,
+      child: Icon(icon),
     );
   }
 
   void _sum() {
-    setState(() => _cont++);
+    setState(() {
+      _contador++;
+    });
   }
 
   void _less() {
-    setState(() => _cont--);
+    setState(() {
+      _contador--;
+    });
   }
 
-  void _zero() {
-    setState(() => _cont = 0);
+  void _reset() {
+    setState(() {
+      _contador = 0;
+    });
   }
 }
